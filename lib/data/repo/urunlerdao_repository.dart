@@ -83,10 +83,10 @@ class UrunlerDaoRepository {
     var url = Uri.parse("http://kasimadalan.pe.hu/urunler/sepettenUrunSil.php");
     var veri = {
       "kullaniciAdi": kullaniciAdi,
-      "sepetId": sepetId.toString()  // Ensure sepetId is a string when sending in the body
+      "sepetId": sepetId.toString()  // body geçerken String olarak dönmeli sepetId
     };
     var cevap = await http.post(url, body: veri);
-    print(cevap.body);  // Debugging output
+    print(cevap.body);
   }
 
 
