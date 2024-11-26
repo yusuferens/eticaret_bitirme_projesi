@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SepetSayfaCubit())
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'JoStore',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Poppins',

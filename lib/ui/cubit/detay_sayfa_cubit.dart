@@ -9,7 +9,11 @@ class DetaySayfaCubit extends Cubit<void>{
   var urepo = UrunlerDaoRepository();
 
   Future<void> ekle(String ad, String resim, String kategori, int fiyat, String marka, int siparisAdeti, String kullaniciAdi) async {
-    await urepo.ekle(ad, resim, kategori, fiyat, marka, siparisAdeti, kullaniciAdi);
+    // Ekleme yaparken siparisAdetimiz sepet işlemlerinde hata yarattığı için for döngüsüyle belirttiğimiz sipariş adetine gelene kadar yeni transactionlar üretiyor
+    for(var i=0; i<siparisAdeti; i++){
+
+      await urepo.ekle(ad, resim, kategori, fiyat, marka, 1, kullaniciAdi);
+    }
     //ekle fonksiyonunu çağırıyoruz ve HTTP isteği yapıyor
     emit(true);
     //  ürünün sepede eklendiğine dair geri dönüş

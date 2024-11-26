@@ -26,7 +26,7 @@ class UrunlerDaoRepository {
     try {
       return UrunlerSepetiCevap.fromJson(json.decode(cevap)).urunlerSepeti;
     } catch (e) {
-      print('hata $e');
+      print('Boş liste döndürülüyor');
       // hata alındığında boş liste döndürmek
       return [];
     }
@@ -43,6 +43,10 @@ class UrunlerDaoRepository {
 
   // POST isteğiyle kullanıcı sepetine ürün eklemek
   // hiçbir şey döndürmediği için void kullanılıyor
+  //HATA 1.
+  //urunEkle fonksiyonu sadece urunId kullanılarak yapılmalıydı
+  //dışarıdan değerler değiştirilebiliyor örneğin laptopun fiyatını değiştirebildim
+
   Future<void> ekle(String ad, String resim, String kategori, int fiyat, String marka, int siparisAdeti, String kullaniciAdi) async {
     var url = Uri.parse("http://kasimadalan.pe.hu/urunler/sepeteUrunEkle.php");
 
@@ -76,9 +80,12 @@ class UrunlerDaoRepository {
 
     return parseUrunlerSepetiCevap(cevap.body);
   }
-
+  //HATA 2.
   // POST isteği kullanılarak kullaniciAdi ve sepetId verileri ile sepetten ürün silmek
-  //hiçbir şeyt döndürmez void
+  // urunSil sepetId'yi siliyor siparisAdetini düşürmüyor
+  // Her ekle işlemi yapıldığında yeni bir sepetId oluştuğu için silme işleminde siparişAdeti değerinin anlamı kalmıyor.
+  // Urun silme işlemi de tekrardan id kullanılarak yapılmalı
+
   Future<void> urunSil(String kullaniciAdi, int sepetId) async {
     var url = Uri.parse("http://kasimadalan.pe.hu/urunler/sepettenUrunSil.php");
     var veri = {

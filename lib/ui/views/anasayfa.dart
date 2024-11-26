@@ -7,6 +7,7 @@ import 'package:eticaret_bitirme_projesi/ui/views/sepet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
 
 //main.dart dosyasındaki MultiBlocProvider ile Cubit'leri başlatıyoruz.
 //UrunlerDaoRepository sınıfı API ile etkileşimi kuruyor
@@ -26,6 +27,15 @@ class _AnasayfaState extends State<Anasayfa> {
   void initState() {
     super.initState();
     context.read<AnasayfaCubit>().urunleriYukle();
+  }
+
+  String formatFiyat(int fiyat) { //Fiyatlandırma görselliği için kütüphane kullandık
+    final formatter = NumberFormat.currency(
+      locale: 'tr_TR',
+      symbol: '₺',
+      decimalDigits: 0, //Kusurat, kuruş
+    );
+    return formatter.format(fiyat);
   }
  //tüm ürünlerle yukarı çıkacak
   @override
@@ -204,7 +214,7 @@ class _AnasayfaState extends State<Anasayfa> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
-                                  '${urun.fiyat} TL',
+                                  formatFiyat(urun.fiyat),
                                   style: const TextStyle(
 
                                     fontSize: 16,

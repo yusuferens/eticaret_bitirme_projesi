@@ -4,6 +4,7 @@ import 'package:eticaret_bitirme_projesi/ui/cubit/detay_sayfa_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:eticaret_bitirme_projesi/data/entity/urunler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 //Bu sayfada ürün detayları,miktar seçimi ve sepete ekleme işlemi gerçekleşiyor
 //Sayfa bir StatefulWidget olarak tanımlanmış ver Urunler nesnesini alıyor
 
@@ -17,6 +18,14 @@ class DetaySayfa extends StatefulWidget {
 }
 
 class _DetaySayfaState extends State<DetaySayfa> {
+  String formatFiyat(int fiyat) { //Fiyatlandırma görselliği için kütüphane kullandık
+    final formatter = NumberFormat.currency(
+      locale: 'tr_TR',
+      symbol: '₺',
+      decimalDigits: 0, //Kusurat, kuruş
+    );
+    return formatter.format(fiyat);
+  }
   // _DetaySayfaState DetaySayfa stful widgetı için değişken veriyi içinde tutuyor
   // bu sayfa için bu veri ürün miktarı
   int _quantity = 1; // başlangıç miktarı  1
@@ -64,6 +73,8 @@ class _DetaySayfaState extends State<DetaySayfa> {
                 ),
               ),
             ),
+
+
             const Spacer(), // Container widgetını aşağıya itmek için kullandık
             Container(
               decoration: BoxDecoration(
@@ -79,11 +90,12 @@ class _DetaySayfaState extends State<DetaySayfa> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${widget.urun.fiyat} TL',
+                    formatFiyat(widget.urun.fiyat),
                     style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                       color: Colors.green,
+                      fontWeight: FontWeight.bold
+
                     ),
                   ),
                       IconButton(

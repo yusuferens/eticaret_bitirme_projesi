@@ -12,7 +12,8 @@ class SepetState {
 class SepetSayfaCubit extends Cubit<SepetState> {
 
   SepetSayfaCubit() : super(SepetState(
-      isLoading: true, sepetUrunler: [])); // Sepet başta boş ve yükleniyor tanımlandı
+      isLoading: true,
+      sepetUrunler: [])); // Sepet başta boş ve yükleniyor tanımlandı
 
   var urepo = UrunlerDaoRepository();
 
@@ -39,30 +40,25 @@ class SepetSayfaCubit extends Cubit<SepetState> {
         sepetUrunler: groupedItems.values.toList()));
   }
 
-  //Sepetten ürün silme fonksiyonu
-  Future<void> urunSil(String kullaniciAdi, int sepetId) async {
+  //Sepetten ürün azaltma ve silme fonksiyonları
+  Future<void> urunAzalt(String kullaniciAdi, int sepetId) async {
     await urepo.urunSil(kullaniciAdi, sepetId);
     await sepetGetir(kullaniciAdi); // silme işlemi ardından sepet yenileniyor
   }
-  void urunAdetAzalt(String kullaniciAdi, int sepetId) async {
-    // Sepetten ürün azaltma fonksiyonu
-    var urun = state.sepetUrunler.firstWhere((item) => item.sepetId == sepetId);
 
-    // Adeti azaltma
-    if (urun.siparisAdeti > 1) {
-      urun.siparisAdeti--;
-
-      // Güncellenmiş sepet listesi emit edilir ve UI güncellenir
-      emit(SepetState(
-        isLoading: false,
-        sepetUrunler: List.from(state.sepetUrunler),
-      ));
-
-
+  Future<void> urunSil(String kullaniciAdi, String ad) async {
+    // sepede ürün eklerken kullandığımız for döngüsüne karşılık tekrardan bir for döngüsü yarattık
+    // bu sefer de aynı ada sahip ürünler silindi ve sepet boşaltma işlemini gerçekleştirdik
+    var liste = await urepo.sepetGetir(kullaniciAdi);
+    for (var urun in liste) {
+      if (urun.ad == ad) {
+        var sepetId = urun.sepetId;
+        await urepo.urunSil(kullaniciAdi, sepetId);
+      }
     }
+
+    await sepetGetir(kullaniciAdi);
   }
-
-
 
 
 }

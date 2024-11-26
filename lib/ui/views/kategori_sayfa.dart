@@ -1,8 +1,11 @@
+import 'package:eticaret_bitirme_projesi/ui/views/sepet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eticaret_bitirme_projesi/ui/cubit/anasayfa_cubit.dart';
 import 'package:eticaret_bitirme_projesi/data/entity/urunler.dart';
+import 'package:intl/intl.dart';
 
+import '../../themes/renkler.dart';
 import 'detay_sayfa.dart';
 // Seçili kategoriye ait ürünleri filtreleyerek ekrana listeliyor
 // ayrıca kullanıcı bir ürüne tıkladığında ürün detay sayfasına yönlendiriliyor
@@ -15,6 +18,14 @@ class KategoriSayfa extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formatFiyat(int fiyat) { //Fiyatlandırma görselliği için kütüphane kullandık
+      final formatter = NumberFormat.currency(
+        locale: 'tr_TR',
+        symbol: '₺',
+        decimalDigits: 0, //Kusurat, kuruş
+      );
+      return formatter.format(fiyat);
+    }
 
     context.read<AnasayfaCubit>().urunleriYukle();  // Tüm ürünleri getiriyoruz
 
@@ -90,7 +101,7 @@ class KategoriSayfa extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
-                          '${urun.fiyat} TL',
+                          formatFiyat(urun.fiyat),
                           style: const TextStyle(
 
                             fontSize: 16,
@@ -106,6 +117,20 @@ class KategoriSayfa extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Sepet()), // Sepet sayfamıza erişeceğimiz widget
+          );
+        },
+        backgroundColor: kartArkaplan3,
+        child: const Icon(
+          Icons.shopping_cart,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
