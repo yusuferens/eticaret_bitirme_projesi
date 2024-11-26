@@ -46,5 +46,4 @@ Sonraki Adımlar:
 
 Sepet ve ürün işlemleri API üzerinden yönetildiği için, kullanıcı eklemeler ve silmeler yaptıkça, veritabanı güncellenir ve UI'de değişiklikler gösterilir.
 =======
-Bitirme projem
->>>>>>> origin/master
+
